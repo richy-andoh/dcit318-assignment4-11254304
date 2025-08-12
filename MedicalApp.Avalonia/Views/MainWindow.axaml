@@ -1,0 +1,102 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MedicalApp.Avalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MedicalApp.Avalonia.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="MedicalApp.Avalonia">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Spacing="10" Margin="0,0,0,20">
+            <TextBlock Text="🏥 Medical Appointment Booking System" 
+                       FontSize="24" FontWeight="Bold" 
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Greeting}" 
+                       FontSize="16" 
+                       HorizontalAlignment="Center"
+                       Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" RowDefinitions="*,*" 
+              HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+            <!-- View Doctors Button -->
+            <Button Grid.Row="0" Grid.Column="0" 
+                    Command="{Binding ShowDoctorsCommand}"
+                    Margin="10" Padding="20"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="👨‍⚕️" FontSize="48" HorizontalAlignment="Center"/>
+                    <TextBlock Text="View Doctors" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Browse available doctors and their specialties" 
+                               FontSize="12" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Book Appointment Button -->
+            <Button Grid.Row="0" Grid.Column="1" 
+                    Command="{Binding BookAppointmentCommand}"
+                    Margin="10" Padding="20"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="📅" FontSize="48" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Book Appointment" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Schedule a new medical appointment" 
+                               FontSize="12" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Manage Appointments Button -->
+            <Button Grid.Row="1" Grid.Column="0" 
+                    Command="{Binding ManageAppointmentsCommand}"
+                    Margin="10" Padding="20"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="📋" FontSize="48" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Manage Appointments" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="View, update, or cancel existing appointments" 
+                               FontSize="12" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Exit Button -->
+            <Button Grid.Row="1" Grid.Column="1" 
+                    Command="{Binding ExitCommand}"
+                    Margin="10" Padding="20"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="🚪" FontSize="48" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Exit" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Close the application" 
+                               FontSize="12" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" Margin="0,20,0,0">
+            <Separator/>
+            <TextBlock Text="DCIT318 Assignment 4 - Medical Appointment System" 
+                       FontSize="12" HorizontalAlignment="Center" 
+                       Margin="0,10,0,0" Foreground="Gray"/>
+        </StackPanel>
+    </Grid>
+
+</Window>

@@ -1,0 +1,119 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MedicalApp.Avalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
+        x:Class="MedicalApp.Avalonia.Views.AppointmentWindow"
+        x:DataType="vm:AppointmentViewModel"
+        Title="Book Appointment"
+        Width="600" Height="500"
+        WindowStartupLocation="CenterOwner">
+
+    <Design.DataContext>
+        <vm:AppointmentViewModel/>
+    </Design.DataContext>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Spacing="10" Margin="0,0,0,20">
+            <TextBlock Text="📅 Book New Appointment" 
+                       FontSize="24" FontWeight="Bold" 
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Schedule a medical appointment with an available doctor" 
+                       FontSize="14" 
+                       HorizontalAlignment="Center"
+                       Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- Form -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="20">
+                
+                <!-- Doctor Selection -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Select Doctor:" FontWeight="Bold"/>
+                        <ComboBox ItemsSource="{Binding Doctors}"
+                                  SelectedItem="{Binding SelectedDoctor}"
+                                  IsEnabled="{Binding !IsLoading}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="{Binding FullName}" FontWeight="Bold"/>
+                                    <TextBlock Text="(" Foreground="Gray"/>
+                                    <TextBlock Text="{Binding Specialty}" Foreground="Gray"/>
+                                    <TextBlock Text=")" Foreground="Gray"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Patient Selection -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Select Patient:" FontWeight="Bold"/>
+                        <ComboBox ItemsSource="{Binding Patients}"
+                                  SelectedItem="{Binding SelectedPatient}"
+                                  IsEnabled="{Binding !IsLoading}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="{Binding FullName}" FontWeight="Bold"/>
+                                    <TextBlock Text="(" Foreground="Gray"/>
+                                    <TextBlock Text="{Binding Email}" Foreground="Gray"/>
+                                    <TextBlock Text=")" Foreground="Gray"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Date and Time -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Appointment Date &amp; Time:" FontWeight="Bold"/>
+                    <DatePicker SelectedDate="{Binding AppointmentDate}"
+                                IsEnabled="{Binding !IsLoading}"/>
+                    <TimePicker SelectedTime="{Binding AppointmentDate}"
+                                IsEnabled="{Binding !IsLoading}"/>
+                </StackPanel>
+
+                <!-- Notes -->
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Notes (Optional):" FontWeight="Bold"/>
+                    <TextBox Text="{Binding Notes}"
+                             AcceptsReturn="True"
+                             Height="80"
+                             IsEnabled="{Binding !IsLoading}"/>
+                </StackPanel>
+
+                <!-- Book Button -->
+                <Button Command="{Binding BookAppointmentCommand}"
+                        Content="📅 Book Appointment"
+                        HorizontalAlignment="Stretch"
+                        Height="40"
+                        IsEnabled="{Binding !IsLoading}"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Status -->
+        <StackPanel Grid.Row="2" Margin="0,20,0,0">
+            <Separator/>
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" 
+                           Text="{Binding StatusMessage}" 
+                           VerticalAlignment="Center"
+                           Margin="0,10,0,0"/>
+                <ProgressBar Grid.Column="1" 
+                             IsIndeterminate="{Binding IsLoading}"
+                             Width="100" Height="4"
+                             Margin="0,10,0,0"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window> 

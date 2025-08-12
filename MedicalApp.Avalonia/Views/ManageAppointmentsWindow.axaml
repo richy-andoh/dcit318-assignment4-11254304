@@ -1,0 +1,130 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MedicalApp.Avalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="700"
+        x:Class="MedicalApp.Avalonia.Views.ManageAppointmentsWindow"
+        x:DataType="vm:ManageAppointmentsViewModel"
+        Title="Manage Appointments"
+        Width="900" Height="700"
+        WindowStartupLocation="CenterOwner">
+
+    <Design.DataContext>
+        <vm:ManageAppointmentsViewModel/>
+    </Design.DataContext>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Spacing="10" Margin="0,0,0,20">
+            <TextBlock Text="📋 Manage Appointments" 
+                       FontSize="24" FontWeight="Bold" 
+                       HorizontalAlignment="Center"/>
+            <TextBlock Text="View, update, and delete patient appointments" 
+                       FontSize="14" 
+                       HorizontalAlignment="Center"
+                       Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- Patient Selection -->
+        <StackPanel Grid.Row="1" Spacing="10" Margin="0,0,0,20">
+            <TextBlock Text="Select Patient:" FontWeight="Bold"/>
+                <ComboBox ItemsSource="{Binding Patients}"
+                          SelectedItem="{Binding SelectedPatient}"
+                          IsEnabled="{Binding !IsLoading}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="{Binding FullName}" FontWeight="Bold"/>
+                            <TextBlock Text="(" Foreground="Gray"/>
+                            <TextBlock Text="{Binding Email}" Foreground="Gray"/>
+                            <TextBlock Text=")" Foreground="Gray"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Appointments Grid -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+            
+            <!-- Appointments List -->
+            <DataGrid Grid.Column="0"
+                      ItemsSource="{Binding Appointments}"
+                      SelectedItem="{Binding SelectedAppointment}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="All"
+                      HeadersVisibility="All"
+                      Margin="0,0,20,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding AppointmentID}" Width="60"/>
+                    <DataGridTextColumn Header="Doctor" Binding="{Binding DoctorName}" Width="150"/>
+                    <DataGridTextColumn Header="Date &amp; Time" Binding="{Binding AppointmentDate, StringFormat='yyyy-MM-dd HH:mm'}" Width="150"/>
+                    <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="200"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Update Panel -->
+            <StackPanel Grid.Column="1" Spacing="15" Width="250">
+                <Border BorderBrush="Gray" BorderThickness="1" Padding="15" CornerRadius="5">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Update Appointment" FontWeight="Bold" FontSize="16"/>
+                        
+                        <StackPanel Spacing="5">
+                            <TextBlock Text="New Date &amp; Time:" FontWeight="Bold"/>
+                            <DatePicker SelectedDate="{Binding NewAppointmentDate}"
+                                        IsEnabled="{Binding !IsLoading}"/>
+                            <TimePicker SelectedTime="{Binding NewAppointmentDate}"
+                                        IsEnabled="{Binding !IsLoading}"/>
+                        </StackPanel>
+
+                        <Button Command="{Binding UpdateAppointmentCommand}"
+                                Content="🔄 Update Appointment"
+                                HorizontalAlignment="Stretch"
+                                Height="35"
+                                IsEnabled="{Binding !IsLoading}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="Red" BorderThickness="1" Padding="15" CornerRadius="5">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="Delete Appointment" FontWeight="Bold" FontSize="16" Foreground="Red"/>
+                        <TextBlock Text="This action cannot be undone. The selected appointment will be permanently deleted." 
+                                   TextWrapping="Wrap" FontSize="12" Foreground="Gray"/>
+                        
+                        <Button Command="{Binding DeleteAppointmentCommand}"
+                                Content="🗑️ Delete Appointment"
+                                HorizontalAlignment="Stretch"
+                                Height="35"
+                                Background="Red"
+                                Foreground="White"
+                                IsEnabled="{Binding !IsLoading}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <!-- Status -->
+        <StackPanel Grid.Row="3" Margin="0,20,0,0">
+            <Separator/>
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" 
+                           Text="{Binding StatusMessage}" 
+                           VerticalAlignment="Center"
+                           Margin="0,10,0,0"/>
+                <ProgressBar Grid.Column="1" 
+                             IsIndeterminate="{Binding IsLoading}"
+                             Width="100" Height="4"
+                             Margin="0,10,0,0"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window> 
